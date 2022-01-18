@@ -1,10 +1,10 @@
 package people;
 
 import gear.*;
-import specificActions.ClapAble;
-import specificActions.Cryable;
-import specificActions.Shoutable;
+import specificActions.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Shorty extends HumanLike implements ClapAble, Cryable, Shoutable {
@@ -23,12 +23,12 @@ public class Shorty extends HumanLike implements ClapAble, Cryable, Shoutable {
         this.weightLessNess = weightLessNess;
     }
 
-    public void doGear(Gear gear, int t, Shorty... shortyes) {
+    public void doGear(Gear gear, int t, List<Shorty> shortyes) {
         for (Shorty shorty : shortyes)
             gear.useGear(shorty, t);
     }
 
-    public void doGear(Gear gear, Shorty... shortyes) {
+    public void doGear(Gear gear, List<Shorty> shortyes) {
         for (Shorty shorty : shortyes)
             gear.useGear(shorty, 5);
     }
@@ -52,16 +52,26 @@ public class Shorty extends HumanLike implements ClapAble, Cryable, Shoutable {
         System.out.printf("%s can't stop shouting\n", name);
     }
 
-    public static void shout(String... names) {
+    public void shout(String... names) {
         for (String name : names) System.out.printf("%s can't stop shouting\n", name);
     }
 
-    public static void cry(String... names) {
+    public void cry(String... names) {
         for (String name : names) System.out.printf("%s is crying miserably\n", name);
     }
 
-    public static void clap(String... names) {
+    public void clap(String... names) {
         for (String name : names) System.out.printf("%s claps with respect\n", name);
+    }
+
+    public List<Shorty> divide(Shorty... shorties) {
+        List<Shorty> team = new ArrayList<>();
+        for (Shorty shorty :
+                shorties) {
+            team.add(shorty);
+            System.out.println(shorty.getName() + "took part in creating new team");
+        }
+        return team;
     }
 
     @Override

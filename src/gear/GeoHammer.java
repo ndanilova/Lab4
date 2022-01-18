@@ -19,9 +19,9 @@ public class GeoHammer extends Gear {
     }
 
     private Ore searchForOre(int t) {
-        if (Math.random() <= 0.3 * t * 0.1) return Ore.ANTI_MOON_ORE;
-        else if (Math.random() <= 0.4 * t * 0.1) return Ore.MOON_ORE;
-        else if (Math.random() <= 0.2 * t * 0.1) return Ore.FROZEN_ALIEN;
+        if (Math.random() <= 0.004 * t) return Ore.ANTI_MOON_ORE;
+        else if (Math.random() <= 0.003 * t) return Ore.MOON_ORE;
+        else if (Math.random() <= 0.002 * t) return Ore.FROZEN_ALIEN;
         else return Ore.ICE;
     }
 

@@ -1,3 +1,12 @@
+package gear;
+
+import ecxeptions.NoGasEcxeption;
+import people.Shorty;
+import specificActions.Checkable;
+import specificActions.Crashable;
+
+import java.util.List;
+
 public class Rocket {
     private int numOfFuel;
     public Engine engine;
@@ -14,7 +23,11 @@ public class Rocket {
         }
 
         public void activateEngine(Rocket rocket) {
-            rocket.useFuel();
+            try {
+                rocket.useFuel();
+            } catch (NoGasEcxeption e) {
+                e.printStackTrace();
+            }
             this.activation = true;
             this.power -= 10;
             if (this.power <= 0) {
@@ -147,11 +160,45 @@ public class Rocket {
         }
     }
 
-    public void useFuel() {
-        if (numOfFuel - 20 == 0) {
-            System.out.println("you don't have enough juice for it");
+    public void useFuel() throws NoGasEcxeption {
+        if (numOfFuel - 20 >= 0) {
+            numOfFuel -= 20;
+        } else {
+        throw new NoGasEcxeption("Hey, you ain't have enough juice for it!");
         }
-        numOfFuel -= 20;
+    }
+
+    public String beChecked(Shorty... shorties) {
+        var checking = new Checkable() {
+            @Override
+            public String check() {
+                String result = new String(engine.getEngineCond().toString());
+                result += "\n" + body.getBodyCond();
+                return result;
+            }
+        };
+        String answer = checking.check();
+        for (Shorty shorty :
+                shorties) {
+            System.out.printf("\n %s took part in checking the spaceship", shorty.getName());
+        }
+        return answer;
+    }
+    public String beChecked(List<Shorty> shorties) {
+        var checking = new Checkable() {
+            @Override
+            public String check() {
+                String result = new String("\nEngine is "+engine.getEngineCond().toString());
+                result += "\n" + "Body is " + body.getBodyCond();
+                return result;
+            }
+        };
+        String answer = checking.check();
+        for (Shorty shorty :
+                shorties) {
+            System.out.printf("%s took part in checking the spaceship\n", shorty.getName());
+        }
+        return answer;
     }
 
 }
