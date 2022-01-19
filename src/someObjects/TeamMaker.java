@@ -1,6 +1,6 @@
 package someObjects;
 
-import ecxeptions.EmptyDataException;
+import exceptions.EmptyDataException;
 import people.Shorty;
 
 import java.util.ArrayList;

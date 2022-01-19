@@ -1,6 +1,6 @@
 package people;
 
-import ecxeptions.EmptyDataException;
+import exceptions.EmptyDataException;
 import gear.*;
 import specificActions.*;
 
@@ -13,14 +13,12 @@ public class Shorty extends HumanLike implements ClapAble, Cryable, Shoutable {
     public IceChop iceChop;
     public JetSneakers jetSneakers;
     public WeightLessNess weightLessNess;
-    private final String name;
 
     Shorty(String name, int weight, GeoHammer geoHammer, AlpenShtock alpenShtock, IceChop iceChop, JetSneakers jetSneakers, WeightLessNess weightLessNess) throws EmptyDataException {
         super(name, weight);
         if (name == null || weight <= 0 || geoHammer == null || alpenShtock == null || iceChop == null || jetSneakers == null || weightLessNess == null) {
             throw new EmptyDataException("Invalid data given to constructor (Shorty)");
         }
-        this.name = name;
         this.geoHammer = geoHammer;
         this.alpenShtock = alpenShtock;
         this.iceChop = iceChop;

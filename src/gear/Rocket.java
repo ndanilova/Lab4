@@ -1,7 +1,7 @@
 package gear;
 
-import ecxeptions.InvalidNumeralDataException;
-import ecxeptions.NoGasException;
+import exceptions.InvalidNumeralDataException;
+import exceptions.NoGasException;
 import people.Shorty;
 import specificActions.Checkable;
 import specificActions.Crashable;
@@ -101,7 +101,7 @@ public class Rocket {
     }
 
     public static class Manual {
-        private static final String info = new String("" + "Max speed = 12000km/h" + "material = aluminium" + "needed instruments = wrench, soldering iron, saw, clincher, screw" + "weight = 308tons" + "Nasa's property");
+        private static final String info = "Max speed = 12000km/h" + "material = aluminium" + "needed instruments = wrench, soldering iron, saw, clincher, screw" + "weight = 308tons" + "Nasa's property";
         private static int NumberOfFixes;
 
         public static void setNumberOfFixes(int numberOfFixes) throws InvalidNumeralDataException {

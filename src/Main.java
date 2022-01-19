@@ -1,5 +1,5 @@
-import ecxeptions.InvalidDataException;
-import ecxeptions.InvalidNumeralDataException;
+import exceptions.InvalidDataException;
+import exceptions.InvalidNumeralDataException;
 import gear.*;
 import people.*;
 import someObjects.MeteoriteRain;

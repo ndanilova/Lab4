@@ -1,7 +1,7 @@
 package someObjects;
 
-import ecxeptions.InvalidDataException;
-import ecxeptions.InvalidNumeralDataException;
+import exceptions.InvalidDataException;
+import exceptions.InvalidNumeralDataException;
 import gear.Rocket;
 
 public class MeteoriteRain {
@@ -47,7 +47,7 @@ public class MeteoriteRain {
             throw new NullPointerException("Rocket can't be null (MeteoriteRain.run)");
         } else {
             int durationRate;
-            int sizeRate = 1;
+            int sizeRate = 0;
 
             if (durationInMinutes <= 5) {
                 durationRate = 1;
