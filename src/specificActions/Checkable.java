@@ -1,5 +1,9 @@
 package specificActions;
 
+import gear.Rocket;
+
 public interface Checkable {
-    public String check();
+
+
+    public Rocket.Report check();
 }

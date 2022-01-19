@@ -1,5 +1,6 @@
 package gear;
 
+import ecxeptions.InvalidNumeralDataException;
 import ecxeptions.NoGasEcxeption;
 import people.Shorty;
 import specificActions.Checkable;
@@ -9,8 +10,10 @@ import java.util.List;
 
 public class Rocket {
     private int numOfFuel;
-    public Engine engine;
-    public Body body;
+    private Engine engine;
+    private Body body;
+    private double durationOfUseInYears;
+    private int fuelConsumption;
 
     public class Engine {
         private int power;
@@ -22,25 +25,23 @@ public class Rocket {
             engineCond = EngineCond.GOOD;
         }
 
-        public void activateEngine(Rocket rocket) {
+        protected void run() {
             try {
-                rocket.useFuel();
+                useFuel();
+                this.activation = true;
+                this.power -= 10;
+                if (this.power <= 0) {
+                    becomeOutOfOrder();
+                } else if (this.power <= 50) {
+                    engineCond = EngineCond.VERY_BAD;
+                } else if (this.power <= 100) {
+                    engineCond = EngineCond.BAD;
+                } else if (this.power <= 200) {
+                    engineCond = EngineCond.MEDIUM;
+                }
             } catch (NoGasEcxeption e) {
                 e.printStackTrace();
             }
-            this.activation = true;
-            this.power -= 10;
-            if (this.power <= 0) {
-                becomeOutOfOrder();
-            } else if (this.power <= 50) {
-                engineCond = EngineCond.VERY_BAD;
-            } else if (this.power <= 100) {
-                engineCond = EngineCond.BAD;
-            } else if (this.power <= 200) {
-                engineCond = EngineCond.MEDIUM;
-            }
-
-
         }
 
         public void deactivateEngine() {
@@ -72,17 +73,26 @@ public class Rocket {
             NO_SCRATCH, SCRATCHED, DENTS, CRACKED, KILL_ME
         }
 
-        public void setBodyCond(BodyCond bodyCond) {
-            this.bodyCond = bodyCond;
+        public void setBodyCond(BodyCond bodyCond) throws NullPointerException {
+            if (bodyCond == null) {
+                throw new NullPointerException("Invalid cond for body");
+            }
+            if (bodyCond != BodyCond.KILL_ME) {
+                this.bodyCond = bodyCond;
+            } else {
+                destroyBody();
+            }
         }
 
-        public void breakBody() {
+        private void destroyBody() {
             this.bodyCond = BodyCond.KILL_ME;
             class Window implements Crashable {
                 public void crash() {
                     System.out.println("poor rocket is covered by glass fragments");
                 }
             }
+            Window window = new Window();
+            window.crash();
         }
 
         public BodyCond getBodyCond() {
@@ -91,16 +101,16 @@ public class Rocket {
     }
 
     public static class Manual {
-        private static final String info = new String("" +
-                "Max speed = 12000km/h" +
-                "material = aluminium" +
-                "needed instruments = wrench, soldering iron, saw, clincher, screw" +
-                "weight = 308tons" +
-                "Nasa's property");
+        private static final String info = new String("" + "Max speed = 12000km/h" + "material = aluminium" + "needed instruments = wrench, soldering iron, saw, clincher, screw" + "weight = 308tons" + "Nasa's property");
         private static int NumberOfFixes;
 
-        public static void setNumberOfFixes(int numberOfFixes) {
-            NumberOfFixes = numberOfFixes;
+        public static void setNumberOfFixes(int numberOfFixes) throws InvalidNumeralDataException {
+            if (numberOfFixes <= 0) {
+                throw new InvalidNumeralDataException("number of fixes can't be like that!");
+            } else {
+                NumberOfFixes = numberOfFixes;
+            }
+
         }
 
         public static int getNumberOfFixes() {
@@ -126,6 +136,8 @@ public class Rocket {
 
     public Rocket() {
         NumOfRockets.setNumOfRockets();
+        this.durationOfUseInYears = 1;
+        fuelConsumption = 20;
         this.numOfFuel = 1000;
         class VehicleNumber {
             private int vehicleNumber;
@@ -138,8 +150,12 @@ public class Rocket {
                 return vehicleNumber;
             }
 
-            public void setVehicleNumber(int vehicleNumber) {
+            public void setVehicleNumber(int vehicleNumber) throws InvalidNumeralDataException {
+                if (vehicleNumber <= 0) {
+                    throw new InvalidNumeralDataException("You can't give that vehicle that number!");
+                }
                 this.vehicleNumber = vehicleNumber;
+
             }
         }
 
@@ -148,57 +164,113 @@ public class Rocket {
         this.body = new Body();
     }
 
-    public void beUnusedForSomeHours(int time) {
-        if (time >= 20) {
-            body.breakBody();
-        } else if (time >= 10) {
-            body.setBodyCond(Body.BodyCond.DENTS);
-        } else if (time >= 5) {
-            body.setBodyCond(Body.BodyCond.CRACKED);
-        } else if (time >= 1) {
-            body.setBodyCond(Body.BodyCond.SCRATCHED);
+    private void setFuelConsumption(int durationOfUseInYears) throws InvalidNumeralDataException {
+        if (durationOfUseInYears <= 0) {
+            throw new InvalidNumeralDataException("Invalid number of using duration");
         }
+        this.fuelConsumption = (durationOfUseInYears * 10) + 10;
+
+
+    }
+
+    public void setDurationOfUseInYears(double durationOfUseInYears) throws InvalidNumeralDataException {
+        if (durationOfUseInYears <= 0) {
+            throw new InvalidNumeralDataException("Invalid number of using duration");
+        }
+        this.durationOfUseInYears = durationOfUseInYears;
+        setFuelConsumption((int) durationOfUseInYears);
+
+
+    }
+
+    public void crashBody(int destructivenessRate) {
+        if (destructivenessRate >= 8) {
+            body.setBodyCond(Body.BodyCond.KILL_ME);
+        } else if (destructivenessRate >= 6) {
+            body.setBodyCond(Body.BodyCond.DENTS);
+        } else if (destructivenessRate >= 3) {
+            body.setBodyCond(Body.BodyCond.CRACKED);
+        } else if (destructivenessRate > 0) {
+            body.setBodyCond(Body.BodyCond.SCRATCHED);
+        } else {
+            body.setBodyCond(Body.BodyCond.NO_SCRATCH);
+        }
+    }
+
+    public int getNumOfFuel() {
+        return numOfFuel;
     }
 
     public void useFuel() throws NoGasEcxeption {
-        if (numOfFuel - 20 >= 0) {
-            numOfFuel -= 20;
+        if (numOfFuel - fuelConsumption >= 0) {
+            numOfFuel -= fuelConsumption;
         } else {
-        throw new NoGasEcxeption("Hey, you ain't have enough juice for it!");
+            throw new NoGasEcxeption("Hey, you ain't have enough juice for it!");
         }
     }
 
-    public String beChecked(Shorty... shorties) {
-        var checking = new Checkable() {
-            @Override
-            public String check() {
-                String result = new String(engine.getEngineCond().toString());
-                result += "\n" + body.getBodyCond();
-                return result;
-            }
-        };
-        String answer = checking.check();
-        for (Shorty shorty :
-                shorties) {
-            System.out.printf("\n %s took part in checking the spaceship", shorty.getName());
+    public class Report {
+        private Engine.EngineCond engineCond;
+        private Body.BodyCond bodyCond;
+        private int numOfFuel;
+
+        public Report() {
+            this.engineCond = Engine.EngineCond.GOOD;
+            this.bodyCond = Body.BodyCond.NO_SCRATCH;
+            this.numOfFuel = getNumOfFuel();
         }
-        return answer;
+
+        protected void setBodyCond(Body.BodyCond bodyCond) {
+            this.bodyCond = bodyCond;
+        }
+
+        protected void setEngineCond(Engine.EngineCond engineCond) {
+            this.engineCond = engineCond;
+        }
+
+        protected void setNumOfFuel() {
+            this.numOfFuel = getNumOfFuel();
+        }
+
+        public Report getReport() {
+            return new Report();
+        }
+
+        @Override
+        public String toString() {
+            return "Report{" + "engineCond=" + engineCond + ", bodyCond=" + bodyCond + ", numOfFuel=" + numOfFuel + '}';
+        }
     }
-    public String beChecked(List<Shorty> shorties) {
-        var checking = new Checkable() {
+
+    public void activateEngine() throws NoGasEcxeption {
+        if (numOfFuel <= 0) {
+            throw new NoGasEcxeption("No juice!");
+        } else {
+            engine.run();
+        }
+    }
+
+    public Report giveInfoAboutModules(List<Shorty> shorties) throws NullPointerException {
+        Checkable checking = new Checkable() {
             @Override
-            public String check() {
-                String result = new String("\nEngine is "+engine.getEngineCond().toString());
-                result += "\n" + "Body is " + body.getBodyCond();
-                return result;
+            public Report check() {
+                Report report = new Report();
+                report.setBodyCond(body.bodyCond);
+                report.setEngineCond(engine.engineCond);
+                report.setNumOfFuel();
+                return report;
             }
         };
-        String answer = checking.check();
-        for (Shorty shorty :
-                shorties) {
+        Report report = checking.check();
+        if (shorties == null || shorties.isEmpty()) {
+            throw new NullPointerException("Your List of Shorties is empty, no one can check the spaceship");
+        }
+
+        for (Shorty shorty : shorties) {
             System.out.printf("%s took part in checking the spaceship\n", shorty.getName());
         }
-        return answer;
+
+        return report;
     }
 
 }
