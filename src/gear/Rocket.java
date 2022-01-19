@@ -1,7 +1,7 @@
 package gear;
 
 import ecxeptions.InvalidNumeralDataException;
-import ecxeptions.NoGasEcxeption;
+import ecxeptions.NoGasException;
 import people.Shorty;
 import specificActions.Checkable;
 import specificActions.Crashable;
@@ -39,7 +39,7 @@ public class Rocket {
                 } else if (this.power <= 200) {
                     engineCond = EngineCond.MEDIUM;
                 }
-            } catch (NoGasEcxeption e) {
+            } catch (NoGasException e) {
                 e.printStackTrace();
             }
         }
@@ -201,11 +201,11 @@ public class Rocket {
         return numOfFuel;
     }
 
-    public void useFuel() throws NoGasEcxeption {
+    public void useFuel() throws NoGasException {
         if (numOfFuel - fuelConsumption >= 0) {
             numOfFuel -= fuelConsumption;
         } else {
-            throw new NoGasEcxeption("Hey, you ain't have enough juice for it!");
+            throw new NoGasException("Hey, you ain't have enough juice for it!");
         }
     }
 
@@ -242,9 +242,9 @@ public class Rocket {
         }
     }
 
-    public void activateEngine() throws NoGasEcxeption {
+    public void activateEngine() throws NoGasException {
         if (numOfFuel <= 0) {
-            throw new NoGasEcxeption("No juice!");
+            throw new NoGasException("No juice!");
         } else {
             engine.run();
         }

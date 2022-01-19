@@ -44,13 +44,13 @@ public class TeamMaker {
             group.removeAll(newGroup);
         }
         System.out.println("Our shorties decided to divide group! \n\nThe first group:");
-        for (Shorty sh:
-             newGroup) {
+        for (Shorty sh :
+                newGroup) {
             System.out.println(sh.getName());
         }
         System.out.println("\nThe second group:");
-        for (Shorty sh:
-             group) {
+        for (Shorty sh :
+                group) {
             System.out.println(sh.getName());
         }
         return newGroup;
