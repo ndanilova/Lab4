@@ -15,6 +15,10 @@ public class Rocket {
     private double durationOfUseInYears;
     private int fuelConsumption;
 
+    private enum EngineCond {
+        GOOD, MEDIUM, BAD, VERY_BAD, OUT_OF_ORDER
+    }
+
     public class Engine {
         private int power;
         private boolean activation;
@@ -57,9 +61,9 @@ public class Rocket {
             System.out.println("It seems that your engine needs help");
         }
 
-        private enum EngineCond {
-            GOOD, MEDIUM, BAD, VERY_BAD, OUT_OF_ORDER
-        }
+    }
+    private enum BodyCond {
+        NO_SCRATCH, SCRATCHED, DENTS, CRACKED, KILL_ME
     }
 
     public class Body {
@@ -69,9 +73,6 @@ public class Rocket {
             bodyCond = BodyCond.NO_SCRATCH;
         }
 
-        private enum BodyCond {
-            NO_SCRATCH, SCRATCHED, DENTS, CRACKED, KILL_ME
-        }
 
         public void setBodyCond(BodyCond bodyCond) throws NullPointerException {
             if (bodyCond == null) {
@@ -185,15 +186,15 @@ public class Rocket {
 
     public void crashBody(int destructivenessRate) {
         if (destructivenessRate >= 8) {
-            body.setBodyCond(Body.BodyCond.KILL_ME);
+            body.setBodyCond(BodyCond.KILL_ME);
         } else if (destructivenessRate >= 6) {
-            body.setBodyCond(Body.BodyCond.DENTS);
+            body.setBodyCond(BodyCond.DENTS);
         } else if (destructivenessRate >= 3) {
-            body.setBodyCond(Body.BodyCond.CRACKED);
+            body.setBodyCond(BodyCond.CRACKED);
         } else if (destructivenessRate > 0) {
-            body.setBodyCond(Body.BodyCond.SCRATCHED);
+            body.setBodyCond(BodyCond.SCRATCHED);
         } else {
-            body.setBodyCond(Body.BodyCond.NO_SCRATCH);
+            body.setBodyCond(BodyCond.NO_SCRATCH);
         }
     }
 
@@ -210,21 +211,21 @@ public class Rocket {
     }
 
     public class Report {
-        private Engine.EngineCond engineCond;
-        private Body.BodyCond bodyCond;
+        private EngineCond engineCond;
+        private BodyCond bodyCond;
         private int numOfFuel;
 
         public Report() {
-            this.engineCond = Engine.EngineCond.GOOD;
-            this.bodyCond = Body.BodyCond.NO_SCRATCH;
+            this.engineCond = EngineCond.GOOD;
+            this.bodyCond = BodyCond.NO_SCRATCH;
             this.numOfFuel = getNumOfFuel();
         }
 
-        protected void setBodyCond(Body.BodyCond bodyCond) {
+        protected void setBodyCond(BodyCond bodyCond) {
             this.bodyCond = bodyCond;
         }
 
-        protected void setEngineCond(Engine.EngineCond engineCond) {
+        protected void setEngineCond(EngineCond engineCond) {
             this.engineCond = engineCond;
         }
 
