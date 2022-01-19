@@ -1,6 +1,6 @@
 package clothes;
 
-public enum clothes {
+public enum Clothes {
     EARTHMAN, SPACESUIT, ALIENWEAR, UNKNOWN;
 
     @Override
