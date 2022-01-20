@@ -62,6 +62,7 @@ public class Rocket {
         }
 
     }
+
     private enum BodyCond {
         NO_SCRATCH, SCRATCHED, DENTS, CRACKED, KILL_ME
     }

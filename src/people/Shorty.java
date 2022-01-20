@@ -1,9 +1,12 @@
 package people;
 
 import exceptions.EmptyDataException;
+import exceptions.InvalidNumeralDataException;
 import gear.*;
+import someObjects.Team;
 import specificActions.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,6 +42,23 @@ public class Shorty extends HumanLike implements ClapAble, Cryable, Shoutable {
     public static void doGear(Gear gear, List<Shorty> shortyes) {
         for (Shorty shorty : shortyes)
             gear.useGear(shorty, 5);
+    }
+
+    public List<Team> divideFromIndex(List<Shorty> shorties, int index) throws EmptyDataException {
+        if (shorties == null || shorties.isEmpty()) {
+            throw new EmptyDataException("Invalid data given to Shorty.divideFromIndex (list is empty)");
+        }
+        if (index <= 0) {
+            throw new EmptyDataException("your index can't be zero or less");
+        }
+        List<Shorty> shorties1 = shorties.subList(0, index);
+        List<Shorty> shorties2 = shorties.subList(index, shorties.size());
+        Team team1 = new Team(shorties1);
+        Team team2 = new Team(shorties2);
+        List<Team> teams = new ArrayList<>();
+        teams.add(team1);
+        teams.add(team2);
+        return teams;
     }
 
     public boolean everythingReady() {
