@@ -5,7 +5,6 @@ import people.*;
 import someObjects.MeteoriteRain;
 import someObjects.Team;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
