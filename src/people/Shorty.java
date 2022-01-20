@@ -58,6 +58,18 @@ public class Shorty extends HumanLike implements ClapAble, Cryable, Shoutable {
         List<Team> teams = new ArrayList<>();
         teams.add(team1);
         teams.add(team2);
+        System.out.printf("\n%s has decided to divide the team\n\nTeam number one will contain:\n",getName());
+        for (Shorty sh:
+             team1.getShorties()) {
+            System.out.println(sh.getName());
+        }
+        System.out.println();
+        System.out.println("Team number two will contain:");
+        for (Shorty sh:
+                team2.getShorties()) {
+            System.out.println(sh.getName());
+        }
+        System.out.println();
         return teams;
     }
 
